@@ -51,34 +51,6 @@ A Telegram bot that uses Tesseract or Yandex Vision to transcribe text from imag
     ```
 6. The bot will start and connect to Telegram using your token.
 
-## Setup and Installation
-Before first run, complete the following:
-
-1. Copy the example `.env`:
-    ```bash
-    cp .env.example .env
-    ```
-2. Open `.env` in your editor and fill in:
-   - `BOT_TOKEN` — your Telegram bot token from [@BotFather](https://t.me/BotFather).
-3. (Optional) Adjust other settings as needed:
-   - `ADMIN_ID` — your Telegram User ID (admin without limits).
-   - `DEFAULT_OCR_ENGINE` — default OCR engine (`tesseract` or `yandex`).
-   - `ENABLED_OCR_ENGINES` — comma-separated list of enabled engines (e.g. `tesseract,yandex`).
-   - `YANDEX_CLOUD_API_KEY` / `YANDEX_CLOUD_FOLDER_ID` — for Yandex Vision API.
-   - `RATE_LIMIT_DAILY`, `RATE_LIMIT_WEEKLY`, `RATE_LIMIT_MONTHLY` — numeric rate limits.
-   - `LOG_LEVEL` — `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`.
-   - `LOG_FILE` — path to log file (empty = console only).
-   - `DATABASE_PATH` — path to SQLite file (e.g. `database/ocr_bot.db`).
-   - `TESSERACT_CMD_PATH` — full path to `tesseract`, if not in system `PATH`.
-   - `DEFAULT_OCR_LANGUAGE` / `SUPPORTED_OCR_LANGUAGES` — OCR language codes.
-   - `OCR_LOG_PREVIEW_LENGTH` — number of characters to preview in logs.
-4. Start the container:
-    ```bash
-    docker-compose up -d
-    ```
-
-For full descriptions of all variables, see [Configuration](#configuration).
-
 ## Installation from Source
 <details>
 <summary>Click to expand manual installation</summary>

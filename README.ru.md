@@ -51,34 +51,6 @@
     ```
 6. Бот запустится и подключится к Telegram по вашему токену.
 
-## Настройка и установка
-Перед первым запуском выполните:
-
-1. Скопируйте пример `.env`:
-    ```bash
-    cp .env.example .env
-    ```
-2. Откройте `.env` и заполните:
-   - `BOT_TOKEN` — ваш токен от [@BotFather](https://t.me/BotFather).
-3. (Опционально) Настройте остальные параметры:
-   - `ADMIN_ID` — ваш Telegram User ID (админ без лимитов).
-   - `DEFAULT_OCR_ENGINE` — движок по умолчанию (`tesseract` или `yandex`).
-   - `ENABLED_OCR_ENGINES` — через запятую: какие движки включены (`tesseract,yandex`).
-   - `YANDEX_CLOUD_API_KEY` и `YANDEX_CLOUD_FOLDER_ID` — для Yandex Vision API.
-   - `RATE_LIMIT_DAILY`, `RATE_LIMIT_WEEKLY`, `RATE_LIMIT_MONTHLY` — числовые лимиты.
-   - `LOG_LEVEL` — `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`.
-   - `LOG_FILE` — путь до файла логов (пустое = только консоль).
-   - `DATABASE_PATH` — путь до SQLite-файла (например, `database/ocr_bot.db`).
-   - `TESSERACT_CMD_PATH` — полный путь к исполняемому `tesseract`, если не в PATH.
-   - `DEFAULT_OCR_LANGUAGE` и `SUPPORTED_OCR_LANGUAGES` — коды языков для Tesseract.
-   - `OCR_LOG_PREVIEW_LENGTH` — длина предпросмотра текста в логах (в символах).
-4. Запустите контейнер:
-    ```bash
-    docker-compose up -d
-    ```
-
-Полные описания переменных — в разделе [Конфигурация](#конфигурация).
-
 ## Установка из исходников
 <details>
 <summary>Нажмите, чтобы развернуть инструкцию</summary>
