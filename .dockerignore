@@ -1,0 +1,24 @@
+# Exclude Docker and Git service files
+.dockerignore
+Dockerfile
+docker-compose.yml
+.git
+.gitignore
+README.md
+
+# Exclude Python virtual environments
+.venv
+venv
+*.pyc
+__pycache__/
+
+# Exclude configuration files and secrets
+.env*
+*.json
+
+# Exclude data that should be in volumes
+database/
+logs/
+temp_images/
+audio/
+data/

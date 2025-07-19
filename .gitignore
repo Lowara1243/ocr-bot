@@ -1,0 +1,35 @@
+.env
+*.env
+# Ignore all .env files
+!/.env.example
+
+# Python build artifacts and cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Database files
+*.db
+*.sqlite3
+
+# Logs and temporary data
+logs/
+*.log
+temp_images/
+audio/
+data/
+
+# IDE and OS specific files
+.idea/
+.vscode/
+.DS_Store # для macOS
+*.swp # для Vim

@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  ocr-bot:
+    build: .
+    image: lowara1243/ocr-bot:1.0
+    container_name: telegram_ocr_bot
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./database:/app/database
+      - ./logs:/app/logs
+      - ./temp_images:/app/temp_images
+    tty: true
