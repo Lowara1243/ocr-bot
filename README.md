@@ -9,7 +9,6 @@ A Telegram bot that uses Tesseract or Yandex Vision to transcribe text from imag
 ## Table of Contents
 - [Features](#features)
 - [Quick Start (Docker Compose)](#quick-start-docker-compose)
-- [Setup and Installation](#setup-and-installation)
 - [Installation from Source](#installation-from-source)
 - [Configuration](#configuration)
 - [Bot Management](#bot-management)
@@ -22,13 +21,10 @@ A Telegram bot that uses Tesseract or Yandex Vision to transcribe text from imag
 - **Ready for Deployment:** Optimized for easy deployment with Docker Compose / Podman Compose.
 
 ## Quick Start (Docker Compose)
-1. Create a new directory and place your `docker-compose.yml` there.
-2. Copy the example environment file:
-    ```bash
-    cp .env.example .env
-    ```
-3. Edit `.env` and set at least `BOT_TOKEN`.
-4. Create a `docker-compose.yml` with the following content, replacing `YOUR_USERNAME` if you host the image yourself:
+This is the recommended way to run the bot.
+
+1.  Create a new directory for your bot.
+2.  Create a `docker-compose.yml` file in this directory with the following content:
     ```yaml
     version: '3.8'
 
@@ -45,22 +41,23 @@ A Telegram bot that uses Tesseract or Yandex Vision to transcribe text from imag
           - ./temp_images:/app/temp_images
         tty: true
     ```
-5. Run:
+3.  **Configure the bot.** At a minimum, you need to create a `.env` file and set your `BOT_TOKEN`. See the [Configuration](#configuration) section for a full guide and list of all variables.
+4.  Run the bot:
     ```bash
     docker-compose up -d
     ```
-6. The bot will start and connect to Telegram using your token.
+5.  The bot will start and connect to Telegram using your token.
 
 ## Installation from Source
 <details>
-<summary>Click to expand manual installation</summary>
+<summary>Click to expand for manual installation instructions</summary>
 
-1. **Clone the repository**
+1.  **Clone the repository**
     ```bash
     git clone https://github.com/Lowara1243/ocr-bot.git
     cd ocr-bot
     ```
-2. **Create virtual environment & install dependencies**
+2.  **Create a virtual environment & install dependencies**
     - Using `uv` (recommended):
         ```bash
         uv pip install -r requirements.txt
@@ -68,41 +65,43 @@ A Telegram bot that uses Tesseract or Yandex Vision to transcribe text from imag
     - Using standard `pip`:
         ```bash
         python -m venv .venv
-        source .venv/bin/activate     # Windows: .venv\Scripts\activate
+        source .venv/bin/activate     # For Windows use: .venv\Scripts\activate
         pip install -r requirements.txt
         ```
-3. **Configure environment**
-    ```bash
-    cp .env.example .env
-    ```
-    Fill in at least `BOT_TOKEN`; see [Configuration](#configuration) for details.
-4. **Run the bot**
+3.  **Configure the bot.** Create a `.env` file and set your `BOT_TOKEN` and any other required variables. See the [Configuration](#configuration) section for details.
+4.  **Run the bot**
     ```bash
     python main.py
     ```
-</details>
+    </details>
 
 ## Configuration
-Copy `.env.example` to `.env` and adjust:
+To configure the bot, create a `.env` file in the project's root directory. The easiest way is to copy the example file:
 
-| Переменная                | Описание                                                              | Обязательно |
-|:--------------------------|:----------------------------------------------------------------------|:-----------:|
-| `BOT_TOKEN`               | Ваш Telegram-бот токен от [@BotFather](https://t.me/BotFather).       |   **Да**    |
-| `ADMIN_ID`                | Ваш Telegram User ID (админ без ограничений).                         |     Нет     |
-| `DEFAULT_OCR_ENGINE`      | Движок OCR по умолчанию (`tesseract` или `yandex`).                   |     Нет     |
-| `ENABLED_OCR_ENGINES`     | Список движков через запятую (например, `tesseract,yandex`).          |     Нет     |
-| `YANDEX_CLOUD_API_KEY`    | API-ключ Yandex Cloud для Yandex Vision API.                          |     Нет     |
-| `YANDEX_CLOUD_FOLDER_ID`  | ID папки в Yandex Cloud для Yandex Vision API.                        |     Нет     |
-| `RATE_LIMIT_DAILY`        | Суточный лимит запросов (целое число).                                |     Нет     |
-| `RATE_LIMIT_WEEKLY`       | Недельный лимит запросов (целое число).                               |     Нет     |
-| `RATE_LIMIT_MONTHLY`      | Месячный лимит запросов (целое число).                                |     Нет     |
-| `LOG_LEVEL`               | Уровень логирования: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`. |     Нет     |
-| `LOG_FILE`                | Имя файла логов (оставьте пустым для консоли).                        |     Нет     |
-| `DATABASE_PATH`           | Путь до SQLite-файла (например `database/ocr_bot.db`).                |     Нет     |
-| `TESSERACT_CMD_PATH`      | Полный путь к `tesseract`, если не в системном `PATH`.                |     Нет     |
-| `DEFAULT_OCR_LANGUAGE`    | Язык OCR по умолчанию (`eng`, `rus`, `eng+rus` и т.п.).               |     Нет     |
-| `SUPPORTED_OCR_LANGUAGES` | Поддерживаемые языки через запятую (для Tesseract).                   |     Нет     |
-| `OCR_LOG_PREVIEW_LENGTH`  | Длина предпросмотра текста в логах (в символах).                      |     Нет     |
+```bash
+cp .env.example .env
+```
+
+Then, open `.env` in your editor and adjust the settings.
+
+| Variable                  | Description                                                          | Required |
+|:--------------------------|:---------------------------------------------------------------------|:--------:|
+| `BOT_TOKEN`               | Your Telegram bot token from [@BotFather](https://t.me/BotFather).   | **Yes**  |
+| `ADMIN_ID`                | Your Telegram User ID (admin has no limits).                         |    No    |
+| `DEFAULT_OCR_ENGINE`      | Default OCR engine to use (`tesseract` or `yandex`).                 |    No    |
+| `ENABLED_OCR_ENGINES`     | Comma-separated list of enabled engines (e.g., `tesseract,yandex`).  |    No    |
+| `YANDEX_CLOUD_API_KEY`    | API key for Yandex Cloud Vision API.                                 |    No    |
+| `YANDEX_CLOUD_FOLDER_ID`  | Folder ID for Yandex Cloud Vision API.                               |    No    |
+| `RATE_LIMIT_DAILY`        | Daily request limit (integer).                                       |    No    |
+| `RATE_LIMIT_WEEKLY`       | Weekly request limit (integer).                                      |    No    |
+| `RATE_LIMIT_MONTHLY`      | Monthly request limit (integer).                                     |    No    |
+| `LOG_LEVEL`               | Logging level: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`.      |    No    |
+| `LOG_FILE`                | Path to the log file (leave empty to log to console only).           |    No    |
+| `DATABASE_PATH`           | Path to the SQLite database file (e.g., `database/ocr_bot.db`).      |    No    |
+| `TESSERACT_CMD_PATH`      | Full path to the `tesseract` executable if not in the system `PATH`. |    No    |
+| `DEFAULT_OCR_LANGUAGE`    | Default OCR language (`eng`, `rus`, `eng+rus`, etc.).                |    No    |
+| `SUPPORTED_OCR_LANGUAGES` | Comma-separated list of supported languages (for Tesseract).         |    No    |
+| `OCR_LOG_PREVIEW_LENGTH`  | Number of characters to preview from transcribed text in logs.       |    No    |
 
 ## Bot Management
 - **View logs:**  
@@ -110,13 +109,12 @@ Copy `.env.example` to `.env` and adjust:
   docker-compose logs -f
   ```
 
-* **Stop the bot:**
-
+- **Stop the bot:**
   ```bash
   docker-compose down
   ```
-* **Restart the bot:**
 
+- **Restart the bot:**
   ```bash
   docker-compose restart
   ```
