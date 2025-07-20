@@ -1,0 +1,30 @@
+name: Security issue
+description: Report a potential security vulnerability (confidential)
+title: "[SECURITY] "
+labels: ["security","confidential"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Do not open a public issue.**  
+        Send all details by email to **Lowara1243@gmail.com**.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary of the vulnerability
+      description: Brief description of the issue
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: How to reproduce the vulnerability
+  - type: input
+    id: logs
+    attributes:
+      label: Links to logs (if any)
+      description: URLs or file names
+  - type: input
+    id: contact
+    attributes:
+      label: Your contact (optional)
+      description: Email or Telegram for follow-up
