@@ -1,0 +1,35 @@
+name: Bug report
+description: Report a bug in the bot’s behavior
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out this form to help us reproduce and fix the issue.
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Describe how to reproduce the bug, step by step
+      placeholder: |
+        1. …
+        2. …
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened
+  - type: dropdown
+    id: version
+    attributes:
+      label: Bot version
+      options:
+        - latest
+        - 1.x
+        - 0.x
