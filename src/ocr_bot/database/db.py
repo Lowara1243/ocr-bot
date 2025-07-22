@@ -4,7 +4,7 @@ from typing import Optional, Any
 
 from loguru import logger
 
-from src.ocr_bot.config import DATABASE_PATH, DEFAULT_OCR_ENGINE, DEFAULT_OCR_LANGUAGE
+from ..config import DATABASE_PATH, DEFAULT_OCR_ENGINE, DEFAULT_OCR_LANGUAGE
 
 
 class Database:

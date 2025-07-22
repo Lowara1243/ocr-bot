@@ -8,10 +8,10 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, PhotoSize
 from loguru import logger
 
-from src.ocr_bot import config
-from src.ocr_bot.database.db import Database
-from src.ocr_bot.ocr_engines import get_ocr_engine, ENGINES
-from src.ocr_bot.utils import RateLimiter
+from .. import config
+from ..database.db import Database
+from ..ocr_engines import get_ocr_engine, ENGINES
+from ..utils.rate_limiter import RateLimiter
 
 user_router = Router()
 

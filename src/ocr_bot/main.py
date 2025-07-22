@@ -4,11 +4,11 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from loguru import logger
-from src.ocr_bot.utils import set_bot_commands
 
-import config
-from src.ocr_bot.database import Database
-from src.ocr_bot.handlers.user_handlers import register_user_handlers
+from . import config
+from .database.db import Database
+from .handlers.user_handlers import register_user_handlers
+from .utils.bot_commands import set_bot_commands
 
 
 async def on_startup(bot: Bot):

@@ -1,5 +1,5 @@
 import os
-from src.ocr_bot.config import ENABLED_OCR_ENGINES
+from ..config import ENABLED_OCR_ENGINES
 from .base_ocr import BaseOCR
 from .tesseract_ocr import TesseractOCR
 from .yandex_ocr import YandexOCR

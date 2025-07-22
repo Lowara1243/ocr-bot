@@ -5,7 +5,7 @@ from loguru import logger
 from typing import Optional, Dict
 
 from .base_ocr import BaseOCR
-from src.ocr_bot.config import YANDEX_CLOUD_API_KEY, YANDEX_CLOUD_FOLDER_ID
+from ..config import YANDEX_CLOUD_API_KEY, YANDEX_CLOUD_FOLDER_ID
 
 
 class YandexOCR(BaseOCR):

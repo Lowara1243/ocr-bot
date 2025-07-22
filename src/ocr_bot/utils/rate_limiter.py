@@ -1,9 +1,8 @@
 from datetime import datetime, timedelta
 
 from loguru import logger
-
-from src.ocr_bot.config import RATE_LIMIT_DAILY, RATE_LIMIT_WEEKLY, RATE_LIMIT_MONTHLY
-from src.ocr_bot.database.db import Database
+from ..config import RATE_LIMIT_DAILY, RATE_LIMIT_WEEKLY, RATE_LIMIT_MONTHLY
+from ..database.db import Database
 
 
 def _get_start_of_current_month_ts() -> int:

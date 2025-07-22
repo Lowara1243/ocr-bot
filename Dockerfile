@@ -25,4 +25,4 @@ WORKDIR /app
 COPY --from=builder /usr/local/lib/python3.10/site-packages/ /usr/local/lib/python3.10/site-packages/
 COPY src/ocr_bot/ src/ocr_bot/
 
-CMD ["python", "src/ocr_bot/main.py"]
+CMD ["python", "-m", "src.ocr_bot.main"]
