@@ -1,9 +1,18 @@
 [English](README.md) | [Русский](README.ru.md)
 ---
 
-# Telegram OCR Бот
+# Telegram OCR Bot
+
+<p align="center">
+  <a href="https://github.com/Lowara1243/ocr-bot/actions/workflows/ci.yml"><img alt="Статус CI" src="https://github.com/Lowara1243/ocr-bot/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/Lowara1243/ocr-bot/blob/main/LICENSE"><img alt="Лицензия" src="https://img.shields.io/github/license/Lowara1243/ocr-bot"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Версия Python"></a>
+  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Форматирование с Ruff"></a>
+</p>
 
 Мощный Telegram бот, использующий Tesseract или Yandex Vision для распознавания текста на изображениях. Создан с использованием Aiogram 3, асинхронного SQLite и упакован для легкого развертывания с помощью Docker.
+
+---
 
 ## Содержание
 - [Ключевые особенности](#-ключевые-особенности)
@@ -52,7 +61,7 @@
     > **Примечание:** Перед запуском убедитесь, что вы создали локальные директории `./database`, `./logs` и `./temp_images`.
 
 3.  **Настройте бота:**
-    Создайте файл `.env` в той же директории. Как минимум, вы должны указать ваш `BOT_TOKEN`. Полный список переменных смотрите в разделе [Конфигурация](#️-конфигурация).
+    Создайте файл `.env` в той же директории. Как минимум, вы должны указать ваш `BOT_TOKEN`. Полный список переменных смотрите в разделе [Конфигурация](#-конфигурация)
 
 4.  **Запустите бота:**
     ```bash

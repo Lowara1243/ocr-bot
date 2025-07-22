@@ -3,7 +3,16 @@
 
 # Telegram OCR Bot
 
+<p align="center">
+  <a href="https://github.com/Lowara1243/ocr-bot/actions/workflows/ci.yml"><img alt="CI Status" src="https://github.com/Lowara1243/ocr-bot/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/Lowara1243/ocr-bot/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/Lowara1243/ocr-bot"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python version"></a>
+  <a href="https://github.com/astral-sh/ruff"><img src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json" alt="Formatted with Ruff"></a>
+</p>
+
 A powerful Telegram bot that uses Tesseract or Yandex Vision to transcribe text from images. Built with Aiogram 3, asynchronous SQLite, and packaged for easy deployment with Docker.
+
+---
 
 ## Table of Contents
 - [Highlights](#-highlights)
