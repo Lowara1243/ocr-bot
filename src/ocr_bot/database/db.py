@@ -4,7 +4,8 @@ from typing import Optional, Any
 
 from loguru import logger
 
-from config import DATABASE_PATH, DEFAULT_OCR_ENGINE, DEFAULT_OCR_LANGUAGE
+from src.ocr_bot.config import DATABASE_PATH, DEFAULT_OCR_ENGINE, DEFAULT_OCR_LANGUAGE
+
 
 class Database:
     _conn: Optional[aiosqlite.Connection] = None
@@ -40,9 +41,9 @@ class Database:
             conn = await cls.get_connection()
             async with conn.cursor() as cursor:
                 await cursor.execute(sql, params)
-                if fetch == 'one':
+                if fetch == "one":
                     return await cursor.fetchone()
-                if fetch == 'all':
+                if fetch == "all":
                     return await cursor.fetchall()
                 await conn.commit()
         except aiosqlite.Error as e:
@@ -77,7 +78,13 @@ class Database:
         logger.info("Database initialized successfully.")
 
     @classmethod
-    async def add_or_update_user(cls, user_id: int, username: Optional[str], first_name: Optional[str], last_name: Optional[str]):
+    async def add_or_update_user(
+        cls,
+        user_id: int,
+        username: Optional[str],
+        first_name: Optional[str],
+        last_name: Optional[str],
+    ):
         current_time = int(time.time())
         sql = """
             INSERT INTO users (user_id, username, first_name, last_name, created_at, last_active_at)
@@ -94,33 +101,58 @@ class Database:
 
     @classmethod
     async def get_user_ocr_preference(cls, user_id: int) -> str:
-        result = await cls._execute("SELECT ocr_engine_preference FROM users WHERE user_id = ?", (user_id,), fetch='one')
-        return result['ocr_engine_preference'] if result and result['ocr_engine_preference'] else DEFAULT_OCR_ENGINE
+        result = await cls._execute(
+            "SELECT ocr_engine_preference FROM users WHERE user_id = ?",
+            (user_id,),
+            fetch="one",
+        )
+        return (
+            result["ocr_engine_preference"]
+            if result and result["ocr_engine_preference"]
+            else DEFAULT_OCR_ENGINE
+        )
 
     @classmethod
     async def set_user_ocr_preference(cls, user_id: int, engine_name: str):
-        await cls._execute("UPDATE users SET ocr_engine_preference = ? WHERE user_id = ?", (engine_name, user_id))
+        await cls._execute(
+            "UPDATE users SET ocr_engine_preference = ? WHERE user_id = ?",
+            (engine_name, user_id),
+        )
         logger.info(f"User {user_id} OCR engine preference set to {engine_name}.")
 
     @classmethod
     async def get_user_ocr_language(cls, user_id: int) -> str:
-        result = await cls._execute("SELECT ocr_language_preference FROM users WHERE user_id = ?", (user_id,), fetch='one')
-        return result['ocr_language_preference'] if result and result['ocr_language_preference'] else DEFAULT_OCR_LANGUAGE
+        result = await cls._execute(
+            "SELECT ocr_language_preference FROM users WHERE user_id = ?",
+            (user_id,),
+            fetch="one",
+        )
+        return (
+            result["ocr_language_preference"]
+            if result and result["ocr_language_preference"]
+            else DEFAULT_OCR_LANGUAGE
+        )
 
     @classmethod
     async def set_user_ocr_language(cls, user_id: int, language_code: str):
-        await cls._execute("UPDATE users SET ocr_language_preference = ? WHERE user_id = ?", (language_code, user_id))
+        await cls._execute(
+            "UPDATE users SET ocr_language_preference = ? WHERE user_id = ?",
+            (language_code, user_id),
+        )
         logger.info(f"User {user_id} OCR language preference set to {language_code}.")
 
     @classmethod
     async def log_usage(cls, user_id: int, engine_used: str):
         current_time = int(time.time())
-        await cls._execute("INSERT INTO usage_stats (user_id, timestamp, engine_used) VALUES (?, ?, ?)", (user_id, current_time, engine_used))
+        await cls._execute(
+            "INSERT INTO usage_stats (user_id, timestamp, engine_used) VALUES (?, ?, ?)",
+            (user_id, current_time, engine_used),
+        )
         logger.debug(f"Usage logged for user {user_id} with engine {engine_used}.")
 
     @classmethod
     async def get_usage_counts(cls, user_id: int, since_timestamp: int) -> int:
         sql = "SELECT COUNT(*) FROM usage_stats WHERE user_id = ? AND timestamp >= ?"
         params = (user_id, since_timestamp)
-        result = await cls._execute(sql, params, fetch='one')
+        result = await cls._execute(sql, params, fetch="one")
         return result[0] if result else 0

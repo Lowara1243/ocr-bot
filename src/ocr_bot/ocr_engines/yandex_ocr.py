@@ -5,7 +5,8 @@ from loguru import logger
 from typing import Optional, Dict
 
 from .base_ocr import BaseOCR
-from config import YANDEX_CLOUD_API_KEY, YANDEX_CLOUD_FOLDER_ID
+from src.ocr_bot.config import YANDEX_CLOUD_API_KEY, YANDEX_CLOUD_FOLDER_ID
+
 
 class YandexOCR(BaseOCR):
     ENDPOINT = "https://vision.api.cloud.yandex.net/vision/v1/batchAnalyze"
@@ -30,27 +31,31 @@ class YandexOCR(BaseOCR):
 
         return {
             "folderId": self.folder_id,
-            "analyzeSpecs": [{
-                "content": image_b64,
-                "features": [{
-                    "type": "TEXT_DETECTION",
-                    "textDetectionConfig": {
-                        "languageCodes": language_codes
-                    }
-                }],
-            }]
+            "analyzeSpecs": [
+                {
+                    "content": image_b64,
+                    "features": [
+                        {
+                            "type": "TEXT_DETECTION",
+                            "textDetectionConfig": {"languageCodes": language_codes},
+                        }
+                    ],
+                }
+            ],
         }
 
     def _parse_response(self, data: Dict) -> str:
         try:
-            pages = data['results'][0]['results'][0]['textDetection']['pages']
+            pages = data["results"][0]["results"][0]["textDetection"]["pages"]
 
             all_blocks_text = []
             for page in pages:
-                for block in page.get('blocks', []):
+                for block in page.get("blocks", []):
                     all_lines_text = []
-                    for line in block.get('lines', []):
-                        line_text = " ".join(word.get('text', '') for word in line.get('words', []))
+                    for line in block.get("lines", []):
+                        line_text = " ".join(
+                            word.get("text", "") for word in line.get("words", [])
+                        )
                         all_lines_text.append(line_text)
 
                     block_text = "\n".join(all_lines_text)
@@ -61,7 +66,9 @@ class YandexOCR(BaseOCR):
             return full_text if full_text else "[Yandex OCR: text not found]"
 
         except (KeyError, IndexError) as e:
-            logger.error(f"Could not parse Yandex API response structure. Error: {e}. Response: {data}")
+            logger.error(
+                f"Could not parse Yandex API response structure. Error: {e}. Response: {data}"
+            )
             return "[Yandex OCR: response parsing error]"
 
     async def recognize(self, image_path: Path, language: Optional[str] = None) -> str:
@@ -75,11 +82,13 @@ class YandexOCR(BaseOCR):
         request_body = self._build_request_payload(img_b64, language)
         headers = {
             "Authorization": f"Api-Key {self.api_key}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
 
         try:
-            response = await self.http_client.post(self.ENDPOINT, json=request_body, headers=headers)
+            response = await self.http_client.post(
+                self.ENDPOINT, json=request_body, headers=headers
+            )
             response.raise_for_status()
             data = response.json()
             logger.debug(f"Yandex API response: {data}")
@@ -89,7 +98,9 @@ class YandexOCR(BaseOCR):
         except httpx.HTTPStatusError as e:
             logger.exception("Yandex OCR HTTP error")
             error_details = e.response.text
-            return f"[Yandex OCR HTTP Error: {e.response.status_code} - {error_details}]"
+            return (
+                f"[Yandex OCR HTTP Error: {e.response.status_code} - {error_details}]"
+            )
         except httpx.RequestError as e:
             logger.exception("Yandex OCR Request error")
             return f"[Yandex OCR connection Error: {e}]"

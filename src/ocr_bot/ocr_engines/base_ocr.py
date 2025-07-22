@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Optional
 
+
 class BaseOCR(ABC):
     @abstractmethod
     async def recognize(self, image_path: Path, language: Optional[str] = None) -> str:

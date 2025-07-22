@@ -1,30 +1,38 @@
 [English](README.md) | [Русский](README.ru.md)
-
 ---
 
 # Telegram OCR Bot
 
-A Telegram bot that uses Tesseract or Yandex Vision to transcribe text from images.
+A powerful Telegram bot that uses Tesseract or Yandex Vision to transcribe text from images. Built with Aiogram 3, asynchronous SQLite, and packaged for easy deployment with Docker.
 
 ## Table of Contents
-- [Features](#features)
-- [Quick Start (Docker Compose)](#quick-start-docker-compose)
-- [Installation from Source](#installation-from-source)
-- [Configuration](#configuration)
-- [Bot Management](#bot-management)
+- [Highlights](#-highlights)
+- [Quick Start (Docker Compose)](#-quick-start-docker-compose)
+- [Installation from Source](#-installation-from-source)
+- [Configuration](#-configuration)
+- [Bot Management](#-bot-management)
+- [Contributing](#-contributing)
+- [License](#-License)
 
-## Features
-- Transcribes text from images sent as photos.
-- **Multiple OCR Engines:** Supports local processing with **Tesseract** and cloud-based with **Yandex Vision**.
-- **Persistent Storage:** Uses SQLite to store user data and settings.
-- **Flexible Limits System:** Configurable daily, weekly, and monthly usage limits.
-- **Ready for Deployment:** Optimized for easy deployment with Docker Compose / Podman Compose.
+## ✨ Highlights
 
-## Quick Start (Docker Compose)
-This is the recommended way to run the bot.
+-   **🚀 Multiple OCR Engines:** Supports local processing with **Tesseract** and powerful cloud-based recognition with **Yandex Vision**.
+-   **⚡️ Asynchronous:** Built on `asyncio` and `aiogram` for high performance and responsiveness.
+-   **💾 Persistent Storage:** Uses SQLite via `aiosqlite` to asynchronously store user data, settings, and usage statistics.
+-   **⚙️ Flexible Limits System:** Easily configure daily, weekly, and monthly usage limits for users.
+-   **🐳 Docker-Ready:** Optimized for one-command deployment using Docker Compose.
+-   **🔧 Modern Tooling:** Uses `uv` for package management and `ruff` for linting and formatting, ensuring code quality.
 
-1.  Create a new directory for your bot.
-2.  Create a `docker-compose.yml` file in this directory with the following content:
+## 🚀 Quick Start (Docker Compose)
+
+This is the recommended way to run the bot for production.
+
+1.  **Create a Project Directory:**
+    Create a new directory and navigate into it.
+
+2.  **Create `docker-compose.yml`:**
+    Create a file named `docker-compose.yml` with the following content:
+
     ```yaml
     version: '3.8'
 
@@ -36,46 +44,56 @@ This is the recommended way to run the bot.
         env_file:
           - .env
         volumes:
-          - ./database:/app/database
-          - ./logs:/app/logs
-          - ./temp_images:/app/temp_images
+          - ./database:/app/src/ocr_bot/database
+          - ./logs:/app/src/ocr_bot/logs
+          - ./temp_images:/app/src/ocr_bot/temp_images
         tty: true
     ```
-3.  **Configure the bot.** At a minimum, you need to create a `.env` file and set your `BOT_TOKEN`. See the [Configuration](#configuration) section for a full guide and list of all variables.
-4.  Run the bot:
+    > **Note:** Make sure you have created the local directories `./database`, `./logs`, and `./temp_images` before starting.
+
+3.  **Configure the Bot:**
+    Create a `.env` file in the same directory. At a minimum, you must provide your `BOT_TOKEN`. See the [Configuration](#-configuration) section for a full list of variables.
+
+4.  **Run the Bot:**
     ```bash
     docker-compose up -d
     ```
-5.  The bot will start and connect to Telegram using your token.
 
-## Installation from Source
+The bot will start, create necessary files, and connect to Telegram.
+
+## 🛠️ Installation from Source
+
 <details>
 <summary>Click to expand for manual installation instructions</summary>
 
-1.  **Clone the repository**
+1.  **Clone the Repository:**
     ```bash
     git clone https://github.com/Lowara1243/ocr-bot.git
     cd ocr-bot
     ```
-2.  **Create a virtual environment & install dependencies**
-    - Using `uv` (recommended):
-        ```bash
-        uv pip install -r requirements.txt
-        ```
-    - Using standard `pip`:
-        ```bash
-        python -m venv .venv
-        source .venv/bin/activate     # For Windows use: .venv\Scripts\activate
-        pip install -r requirements.txt
-        ```
-3.  **Configure the bot.** Create a `.env` file and set your `BOT_TOKEN` and any other required variables. See the [Configuration](#configuration) section for details.
-4.  **Run the bot**
+
+2.  **Install Dependencies:**
+    We recommend using `uv`.
     ```bash
-    python main.py
+    # Will create .venv and install all dependencies from pyproject.toml
+    uv pip install -e .
+    ```
+
+3.  **Configure the Bot:**
+    Copy the example configuration file and edit it with your settings.
+    ```bash
+    cp .env.example .env
+    nano .env
+    ```
+
+4.  **Run the Bot:**
+    ```bash
+    python src/ocr_bot/main.py
     ```
     </details>
 
-## Configuration
+## ⚙️ Configuration
+
 To configure the bot, create a `.env` file in the project's root directory. The easiest way is to copy the example file:
 
 ```bash
@@ -103,18 +121,33 @@ Then, open `.env` in your editor and adjust the settings.
 | `SUPPORTED_OCR_LANGUAGES` | Comma-separated list of supported languages (for Tesseract).         |    No    |
 | `OCR_LOG_PREVIEW_LENGTH`  | Number of characters to preview from transcribed text in logs.       |    No    |
 
-## Bot Management
-- **View logs:**  
-  ```bash
-  docker-compose logs -f
-  ```
+## 🚦 Bot Management
 
-- **Stop the bot:**
-  ```bash
-  docker-compose down
-  ```
+Basic commands for managing the bot's Docker container.
 
-- **Restart the bot:**
-  ```bash
-  docker-compose restart
-  ```
+-   **View logs:**
+    ```bash
+    docker-compose logs -f
+    ```
+
+-   **Stop the bot:**
+    ```bash
+    docker-compose down
+    ```
+
+-   **Restart the bot:**
+    ```bash
+    docker-compose restart
+    ```
+
+
+## 🤝 Contributing
+
+Contributions are welcome! Whether it's bug reports, feature requests, or pull requests, all are appreciated.
+
+-   **Found a bug?** Please use the [Bug Report](https://github.com/Lowara1243/ocr-bot/issues/new?assignees=&labels=bug&template=bug_report.yml&title=%5BBUG%5D+) template to submit an issue.
+-   **Have a feature idea?** Open an issue to discuss it.
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

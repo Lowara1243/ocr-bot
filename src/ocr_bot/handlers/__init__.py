@@ -1,5 +1,6 @@
 from aiogram import Router
 
+
 def setup_handlers(router: Router):
     from . import user_handlers
 

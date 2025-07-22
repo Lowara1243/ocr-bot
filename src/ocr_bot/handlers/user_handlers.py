@@ -8,16 +8,17 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, PhotoSize
 from loguru import logger
 
-import config
-from database.db import Database
-from ocr_engines import get_ocr_engine, ENGINES
-from utils.rate_limiter import RateLimiter
+from src.ocr_bot import config
+from src.ocr_bot.database.db import Database
+from src.ocr_bot.ocr_engines import get_ocr_engine, ENGINES
+from src.ocr_bot.utils import RateLimiter
 
 user_router = Router()
 
+
 def escape_markdown_v2(text: str) -> str:
-    escape_chars = r'_*[]()~`>#+-=|{}.!'
-    return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', text)
+    escape_chars = r"_*[]()~`>#+-=|{}.!"
+    return re.sub(f"([{re.escape(escape_chars)}])", r"\\\1", text)
 
 
 @user_router.message.middleware()
@@ -26,7 +27,7 @@ async def user_setup_middleware(handler, event: Message, data: dict):
         user_id=event.from_user.id,
         username=event.from_user.username,
         first_name=event.from_user.first_name,
-        last_name=event.from_user.last_name
+        last_name=event.from_user.last_name,
     )
     return await handler(event, data)
 
@@ -36,7 +37,9 @@ async def handle_start(message: Message):
     logger.info(f"User {message.from_user.id} started bot.")
 
     available_engines_str = ", ".join([escape_markdown_v2(e) for e in ENGINES.keys()])
-    supported_langs_str = ", ".join([escape_markdown_v2(lang) for lang in config.SUPPORTED_OCR_LANGUAGES])
+    supported_langs_str = ", ".join(
+        [escape_markdown_v2(lang) for lang in config.SUPPORTED_OCR_LANGUAGES]
+    )
 
     text = (
         "Hello\\! I'm an OCR bot\\. Send me an image, and I'll transcribe the text\\.\n\n"
@@ -61,37 +64,51 @@ async def handle_set_ocr(message: Message):
     available_engines_str = ", ".join([escape_markdown_v2(e) for e in ENGINES.keys()])
 
     if len(args) < 2:
-        await message.reply(f"Usage: `/set_ocr <engine_name>`\nAvailable: `{available_engines_str}`")
+        await message.reply(
+            f"Usage: `/set_ocr <engine_name>`\nAvailable: `{available_engines_str}`"
+        )
         return
 
     engine_name = args[1].lower()
     if engine_name not in ENGINES:
-        await message.reply(f"Invalid engine: `{escape_markdown_v2(engine_name)}`\\.\nAvailable: `{available_engines_str}`")
+        await message.reply(
+            f"Invalid engine: `{escape_markdown_v2(engine_name)}`\\.\nAvailable: `{available_engines_str}`"
+        )
         return
 
     await Database.set_user_ocr_preference(user_id, engine_name)
     logger.info(f"User {user_id} set OCR preference to {engine_name}")
-    await message.reply(f"Your OCR engine is set to: *{escape_markdown_v2(engine_name)}*")
+    await message.reply(
+        f"Your OCR engine is set to: *{escape_markdown_v2(engine_name)}*"
+    )
 
 
 @user_router.message(Command("my_ocr"))
 async def handle_my_ocr(message: Message):
     preference = await Database.get_user_ocr_preference(message.from_user.id)
-    await message.reply(f"Your current OCR engine is: *{escape_markdown_v2(preference)}*")
+    await message.reply(
+        f"Your current OCR engine is: *{escape_markdown_v2(preference)}*"
+    )
 
 
 @user_router.message(Command("set_lang"))
 async def handle_set_lang(message: Message):
     user_id = message.from_user.id
     args = message.text.split(maxsplit=1)
-    supported_langs_str = ", ".join([escape_markdown_v2(lang) for lang in config.SUPPORTED_OCR_LANGUAGES])
+    supported_langs_str = ", ".join(
+        [escape_markdown_v2(lang) for lang in config.SUPPORTED_OCR_LANGUAGES]
+    )
 
     if len(args) < 2:
-        await message.reply(f"Usage: `/set_lang <lang_code>`\nSupported: `{supported_langs_str}`")
+        await message.reply(
+            f"Usage: `/set_lang <lang_code>`\nSupported: `{supported_langs_str}`"
+        )
         return
 
     lang_code = args[1].lower()
-    is_valid = all(part in config.SUPPORTED_OCR_LANGUAGES for part in lang_code.split('+'))
+    is_valid = all(
+        part in config.SUPPORTED_OCR_LANGUAGES for part in lang_code.split("+")
+    )
 
     if not is_valid:
         await message.reply(
@@ -103,7 +120,9 @@ async def handle_set_lang(message: Message):
 
     await Database.set_user_ocr_language(user_id, lang_code)
     logger.info(f"User {user_id} set OCR language to {lang_code}")
-    await message.reply(f"Your OCR language is set to: *{escape_markdown_v2(lang_code)}*")
+    await message.reply(
+        f"Your OCR language is set to: *{escape_markdown_v2(lang_code)}*"
+    )
 
 
 @user_router.message(Command("my_lang"))
@@ -149,7 +168,9 @@ async def handle_photo(message: Message, bot: Bot):
         recognized_text = await ocr_engine.recognize(temp_image_path, language=language)
 
         if not recognized_text or not recognized_text.strip():
-            await processing_msg.edit_text("Could not recognize any text from the image\\.")
+            await processing_msg.edit_text(
+                "Could not recognize any text from the image\\."
+            )
             return
 
         await Database.log_usage(user_id, engine_name)
@@ -165,12 +186,14 @@ async def handle_photo(message: Message, bot: Bot):
         else:
             await processing_msg.edit_text(header)
             for i in range(0, len(text_to_send), max_len):
-                chunk = text_to_send[i:i + max_len]
+                chunk = text_to_send[i : i + max_len]
                 await message.reply(f"```\n{chunk}\n```")
 
     except Exception as e:
-        logger.exception(f"Error handling photo for user {user_id}")
-        await processing_msg.edit_text("An error occurred while processing your image\\. Please try again later\\.")
+        logger.exception(f"Error handling photo for user {user_id}: {e}")
+        await processing_msg.edit_text(
+            "An error occurred while processing your image\\. Please try again later\\."
+        )
     finally:
         if temp_image_path and temp_image_path.exists():
             os.remove(temp_image_path)

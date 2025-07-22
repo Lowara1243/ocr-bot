@@ -1,10 +1,12 @@
 FROM docker.io/library/python:3.10-slim AS builder
 
 WORKDIR /app
-COPY requirements.txt .
+
+COPY pyproject.toml .
+COPY src/ocr_bot/ src/ocr_bot/
 
 RUN pip install --no-cache-dir uv && \
-    uv pip install --system --no-cache -r requirements.txt
+    uv pip install --system --no-cache .
 
 
 FROM docker.io/library/python:3.10-slim
@@ -21,6 +23,6 @@ RUN apt-get update && \
 WORKDIR /app
 
 COPY --from=builder /usr/local/lib/python3.10/site-packages/ /usr/local/lib/python3.10/site-packages/
-COPY . .
+COPY src/ocr_bot/ src/ocr_bot/
 
-CMD ["python", "main.py"]
+CMD ["python", "src/ocr_bot/main.py"]

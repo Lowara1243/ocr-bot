@@ -9,7 +9,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./database:/app/database
-      - ./logs:/app/logs
-      - ./temp_images:/app/temp_images
+      - ./src/ocr_bot/database:/app/src/ocr_bot/database
+      - ./src/ocr_bot/logs:/app/src/ocr_bot/logs
+      - ./src/ocr_bot/temp_images:/app/src/ocr_bot/temp_images
     tty: true

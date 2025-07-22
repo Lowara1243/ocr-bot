@@ -6,30 +6,52 @@ body:
   - type: markdown
     attributes:
       value: |
-        Please fill out this form to help us reproduce and fix the issue.
+        Thank you for helping us improve the bot! Please fill out this form to help us reproduce and fix the issue.
   - type: textarea
     id: steps
     attributes:
       label: Steps to reproduce
-      description: Describe how to reproduce the bug, step by step
+      description: Опишите, как воспроизвести ошибку, шаг за шагом.
       placeholder: |
-        1. …
-        2. …
+        1. I sent the bot an image (see attached file).
+        2. I have selected the Yandex Vision engine.
+        3. The bot returned an error...
+    validations:
+      required: true
   - type: textarea
     id: expected
     attributes:
       label: Expected behavior
-      description: What you expected to happen
+      description: What did you expect to happen?
+    validations:
+      required: true
   - type: textarea
     id: actual
     attributes:
       label: Actual behavior
-      description: What actually happened
+      description: What actually happened?
+    validations:
+      required: true
   - type: dropdown
     id: version
     attributes:
       label: Bot version
+      description: Which version of the bot are you using?
       options:
         - latest
-        - 1.x
-        - 0.x
+        - 1.0
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots, Logs, or Example Files
+      description: |
+        If possible, attach screenshots, logs, or files that cause the error.
+        You can simply drag and drop files into this field.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Is there anything else we need to know? (e.g., configuration details, chat type, etc.)

@@ -11,6 +11,9 @@ __pycache__/
 dist/
 build/
 
+# Development tool cache
+.ruff_cache/
+
 # Virtual environments
 venv/
 .venv/
@@ -22,11 +25,11 @@ env/
 *.sqlite3
 
 # Logs and temporary data
-logs/
+src/ocr_bot/logs/
 *.log
-temp_images/
-audio/
-data/
+src/ocr_bot/temp_images/
+src/ocr_bot/audio/
+src/ocr_bot/data/
 
 # IDE and OS specific files
 .idea/

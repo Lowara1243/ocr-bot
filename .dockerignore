@@ -17,8 +17,8 @@ __pycache__/
 *.json
 
 # Exclude data that should be in volumes
-database/
-logs/
-temp_images/
-audio/
-data/
+src/ocr_bot/database/
+src/ocr_bot/logs/
+src/ocr_bot/temp_images/
+src/ocr_bot/audio/
+src/ocr_bot/data/

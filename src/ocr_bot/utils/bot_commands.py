@@ -2,6 +2,7 @@ from aiogram import Bot
 from aiogram.types import BotCommand, BotCommandScopeDefault
 from loguru import logger
 
+
 async def set_bot_commands(bot: Bot):
     commands = [
         BotCommand(command="start", description="🏁 Start bot / Show help"),
@@ -9,7 +10,7 @@ async def set_bot_commands(bot: Bot):
         BotCommand(command="my_ocr", description="👀 Show current OCR engine"),
         BotCommand(command="set_lang", description="🗣️ Set OCR language"),
         BotCommand(command="my_lang", description="🌍 Show current OCR language"),
-        BotCommand(command="limits", description="📊 Show usage limits")
+        BotCommand(command="limits", description="📊 Show usage limits"),
     ]
     try:
         await bot.set_my_commands(commands, scope=BotCommandScopeDefault())
