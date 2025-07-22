@@ -60,7 +60,8 @@ class RateLimiter:
         return True, "Limits OK"
 
     async def get_current_usage_info(self) -> str:
-        if self.user_id == ADMIN_ID: return "You have no limits because you're an admin."
+        if self.user_id == ADMIN_ID:
+            return "You have no limits because you're an admin."
 
         daily_start_ts = _get_start_of_current_day_ts()
 
