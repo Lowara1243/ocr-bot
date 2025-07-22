@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from loguru import logger
-from ..config import RATE_LIMIT_DAILY, RATE_LIMIT_WEEKLY, RATE_LIMIT_MONTHLY
+from ..config import RATE_LIMIT_DAILY, RATE_LIMIT_WEEKLY, RATE_LIMIT_MONTHLY, ADMIN_ID
 from ..database.db import Database
 
 
@@ -60,6 +60,8 @@ class RateLimiter:
         return True, "Limits OK"
 
     async def get_current_usage_info(self) -> str:
+        if self.user_id == ADMIN_ID: return "You have no limits because you're an admin."
+
         daily_start_ts = _get_start_of_current_day_ts()
 
         daily_count = await Database.get_usage_counts(self.user_id, daily_start_ts)

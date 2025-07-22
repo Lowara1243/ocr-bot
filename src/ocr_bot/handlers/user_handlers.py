@@ -9,6 +9,7 @@ from aiogram.types import Message, PhotoSize
 from loguru import logger
 
 from .. import config
+from ..config import ADMIN_ID
 from ..database.db import Database
 from ..ocr_engines import get_ocr_engine, ENGINES
 from ..utils.rate_limiter import RateLimiter
@@ -143,11 +144,12 @@ async def handle_photo(message: Message, bot: Bot):
     user_id = message.from_user.id
     logger.info(f"Received photo from user {user_id}")
 
-    limiter = RateLimiter(user_id)
-    is_allowed, limit_message = await limiter.check_limit()
-    if not is_allowed:
-        await message.reply(escape_markdown_v2(limit_message))
-        return
+    if user_id != ADMIN_ID:
+        limiter = RateLimiter(user_id)
+        is_allowed, limit_message = await limiter.check_limit()
+        if not is_allowed:
+            await message.reply(escape_markdown_v2(limit_message))
+            return
 
     photo: PhotoSize = message.photo[-1]
     engine_name = await Database.get_user_ocr_preference(user_id)
@@ -173,7 +175,8 @@ async def handle_photo(message: Message, bot: Bot):
             )
             return
 
-        await Database.log_usage(user_id, engine_name)
+        if user_id != ADMIN_ID:
+            await Database.log_usage(user_id, engine_name)
 
         text_to_send = escape_markdown_v2(recognized_text.strip())
         max_len = 4000
