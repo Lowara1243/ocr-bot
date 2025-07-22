@@ -6,7 +6,7 @@ from loguru import logger
 async def set_bot_commands(bot: Bot):
     commands = [
         BotCommand(command="start", description="🏁 Start bot / Show help"),
-        BotCommand(command="set_ocr", description="⚙️ Install OCR engine"),
+        BotCommand(command="set_ocr", description="⚙️ Set OCR engine"),
         BotCommand(command="my_ocr", description="👀 Show current OCR engine"),
         BotCommand(command="set_lang", description="🗣️ Set OCR language"),
         BotCommand(command="my_lang", description="🌍 Show current OCR language"),
