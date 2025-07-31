@@ -44,6 +44,15 @@ jobs:
       - name: Check formatting with Ruff
         run: uv run ruff format --check .
 
+      - name: Debug environment
+        run: |
+          echo "Current working directory: $(pwd)"
+          echo "PYTHONPATH: $PYTHONPATH"
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+
+      - name: Set BOT_TOKEN for tests
+        run: echo "BOT_TOKEN=test_bot_token" >> $GITHUB_ENV
+
       - name: Run tests
         run: |
           export PYTHONPATH=$GITHUB_WORKSPACE
