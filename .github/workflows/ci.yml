@@ -50,8 +50,8 @@ jobs:
           echo "PYTHONPATH: $PYTHONPATH"
           echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
 
-      - name: Set BOT_TOKEN for tests
-        run: echo "BOT_TOKEN=test_bot_token" >> $GITHUB_ENV
+      - name: Load .env.test for tests
+        run: cat src/ocr_bot/tests/.env.test >> $GITHUB_ENV
 
       - name: Run tests
         run: |
