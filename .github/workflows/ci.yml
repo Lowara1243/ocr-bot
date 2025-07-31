@@ -36,19 +36,18 @@ jobs:
         run: uv venv
 
       - name: Install dependencies
-        run: |
-          uv pip install .
-          uv pip install pytest
-          uv tool install ruff
+        run: uv pip install ".[dev]"
 
       - name: Lint with Ruff
-        run: |
-          uv run ruff check .
-          uv run ruff format --check .
+        run: uv run ruff check .
 
-# Yet there are no tests
-#       - name: Run tests
-#         run: uv run pytest
+      - name: Check formatting with Ruff
+        run: uv run ruff format --check .
+
+      - name: Run tests
+        run: |
+          export PYTHONPATH=$GITHUB_WORKSPACE
+          uv run pytest src/ocr_bot/tests/
 
   build-docker:
     needs: test-and-lint
@@ -61,5 +60,25 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Clean Docker build cache
+        run: docker buildx prune -af
+
       - name: Build Docker image
         run: docker build -t ocr-bot:latest .
+
+      - name: Get project version
+        id: get_version
+        run: echo "VERSION=$(grep -m 1 version pyproject.toml | cut -d '"' -f 2)" >> $GITHUB_OUTPUT
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Tag and push to Docker Hub
+        run: |
+          docker tag ocr-bot:latest ${{ secrets.DOCKERHUB_USERNAME }}/ocr-bot:${{ steps.get_version.outputs.VERSION }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ocr-bot:${{ steps.get_version.outputs.VERSION }}
+          docker tag ocr-bot:latest ${{ secrets.DOCKERHUB_USERNAME }}/ocr-bot:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ocr-bot:latest

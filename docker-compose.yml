@@ -3,7 +3,7 @@ version: '3.8'
 services:
   ocr-bot:
     build: .
-    image: lowara1243/ocr-bot:1.0
+    image: lowara1243/ocr-bot:1.1
     container_name: telegram_ocr_bot
     restart: always
     env_file:

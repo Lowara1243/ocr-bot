@@ -11,13 +11,15 @@ README.md
 venv
 *.pyc
 __pycache__/
+*.egg-info/
 
 # Exclude configuration files and secrets
 .env*
 *.json
 
 # Exclude data that should be in volumes
-src/ocr_bot/database/
+src/ocr_bot/database/*.db
+src/ocr_bot/database/*.sqlite3
 src/ocr_bot/logs/
 src/ocr_bot/temp_images/
 src/ocr_bot/audio/

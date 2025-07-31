@@ -97,7 +97,7 @@ The bot will start, create necessary files, and connect to Telegram.
 
 4.  **Run the Bot:**
     ```bash
-    python src/ocr_bot/main.py
+    python -m src.ocr_bot.main
     ```
     </details>
 

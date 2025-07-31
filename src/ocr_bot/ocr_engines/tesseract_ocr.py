@@ -4,8 +4,8 @@ from pathlib import Path
 from loguru import logger
 from typing import Optional
 
-from .base_ocr import BaseOCR
-from ..config import TESSERACT_CMD_PATH, OCR_LOG_PREVIEW_LENGTH
+from src.ocr_bot.ocr_engines.base_ocr import BaseOCR
+from src.ocr_bot.config import TESSERACT_CMD_PATH, OCR_LOG_PREVIEW_LENGTH
 
 if TESSERACT_CMD_PATH:
     pytesseract.pytesseract.tesseract_cmd = TESSERACT_CMD_PATH

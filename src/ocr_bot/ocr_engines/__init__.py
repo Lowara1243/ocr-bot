@@ -1,8 +1,8 @@
 import os
-from ..config import ENABLED_OCR_ENGINES
-from .base_ocr import BaseOCR
-from .tesseract_ocr import TesseractOCR
-from .yandex_ocr import YandexOCR
+from src.ocr_bot.config import ENABLED_OCR_ENGINES
+from src.ocr_bot.ocr_engines.base_ocr import BaseOCR
+from src.ocr_bot.ocr_engines.tesseract_ocr import TesseractOCR
+from src.ocr_bot.ocr_engines.yandex_ocr import YandexOCR
 
 ALL_ENGINES = {
     "tesseract": TesseractOCR,

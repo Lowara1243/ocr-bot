@@ -97,7 +97,7 @@
 
 4.  **Запустите бота:**
     ```bash
-    python src/ocr_bot/main.py
+    python -m src.ocr_bot.main
     ```
     </details>
 

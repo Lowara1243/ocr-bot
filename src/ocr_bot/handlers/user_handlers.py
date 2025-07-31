@@ -8,11 +8,10 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, PhotoSize
 from loguru import logger
 
-from .. import config
-from ..config import ADMIN_ID
-from ..database.db import Database
-from ..ocr_engines import get_ocr_engine, ENGINES
-from ..utils.rate_limiter import RateLimiter
+from src.ocr_bot.config import ADMIN_ID, SUPPORTED_OCR_LANGUAGES
+from src.ocr_bot.database.db import Database
+from src.ocr_bot.ocr_engines import get_ocr_engine, ENGINES
+from src.ocr_bot.utils.rate_limiter import RateLimiter
 
 user_router = Router()
 
@@ -39,7 +38,7 @@ async def handle_start(message: Message):
 
     available_engines_str = ", ".join([escape_markdown_v2(e) for e in ENGINES.keys()])
     supported_langs_str = ", ".join(
-        [escape_markdown_v2(lang) for lang in config.SUPPORTED_OCR_LANGUAGES]
+        [escape_markdown_v2(lang) for lang in SUPPORTED_OCR_LANGUAGES]
     )
 
     text = (
@@ -97,7 +96,7 @@ async def handle_set_lang(message: Message):
     user_id = message.from_user.id
     args = message.text.split(maxsplit=1)
     supported_langs_str = ", ".join(
-        [escape_markdown_v2(lang) for lang in config.SUPPORTED_OCR_LANGUAGES]
+        [escape_markdown_v2(lang) for lang in SUPPORTED_OCR_LANGUAGES]
     )
 
     if len(args) < 2:
@@ -107,9 +106,7 @@ async def handle_set_lang(message: Message):
         return
 
     lang_code = args[1].lower()
-    is_valid = all(
-        part in config.SUPPORTED_OCR_LANGUAGES for part in lang_code.split("+")
-    )
+    is_valid = all(part in SUPPORTED_OCR_LANGUAGES for part in lang_code.split("+"))
 
     if not is_valid:
         await message.reply(
